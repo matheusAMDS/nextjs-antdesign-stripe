@@ -23,6 +23,10 @@ export const getStaticProps:GetStaticProps = async () => {
 const Home:React.FC<Props> = ({ products }) => {
   const router = useRouter()
 
+  function handleNavigation(name:string) {
+    router.push('/products/[name]', `/products/${name}`)
+  }
+
   return (
     <> 
       <h2>Produtos disponíveis</h2>
@@ -36,7 +40,7 @@ const Home:React.FC<Props> = ({ products }) => {
                 <img 
                   src={product.imgUrl} 
                   className="product-image"
-                  onClick={() => router.push(`/products/${product.name}`)}
+                  onClick={() => handleNavigation(product.productPath)}
                 />
               )}
             >

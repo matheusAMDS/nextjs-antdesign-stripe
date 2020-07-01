@@ -86,3 +86,14 @@
   margin: 20px 5vw;
   cursor: pointer;
 }
+
+#checkout-success {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+#checkout-success button {
+  display: block;
+  margin: 20px auto;
+}

@@ -7,6 +7,15 @@ export interface Product {
   price: number;
   productId: string;
   priceId: string;
+  productPath: string;
+}
+
+function convertToPath(name:string) {
+  return name.split(' ').join('_')
+}
+
+function convertFromPath(path:string) {
+  return path.split('_').join(' ')
 }
 
 export default {
@@ -14,13 +23,20 @@ export default {
     const filePath = path.resolve(process.cwd(), 'data', 'products.json')
     const rawProducts = fs.readFileSync(filePath, 'utf8') 
     const products:Product[] = JSON.parse(rawProducts)
+    const serializedProducts = products.map(product => {
+      return {
+        ...product,
+        productPath: convertToPath(product.name)
+      }
+    })
 
-    return products
+    return serializedProducts
   },
 
   async show(name:string) {
     const products:Product[] = await this.list()
-    const product = products.find(product => product.name === name)
+    const productName = convertFromPath(name)
+    const product = products.find(product => product.name === productName)
 
     return product
   },
@@ -29,7 +45,7 @@ export default {
     const products:Product[] = await this.list()
     const paths = products.map(product => ({ 
       params: { 
-        name: product.name 
+        name: convertToPath(product.name)
       }
     }))
 

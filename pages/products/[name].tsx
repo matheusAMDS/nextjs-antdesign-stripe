@@ -12,6 +12,25 @@ interface Props {
   product: Product
 }
 
+export const getStaticProps:GetStaticProps = async ({ params }) => {
+  const product = await Products.show(params.name as string)
+
+  return {
+    props: {
+      product
+    }
+  }
+}
+
+export const getStaticPaths:GetStaticPaths = async () => {
+  const paths = await Products.listPaths()
+
+  return {
+    paths,
+    fallback: false
+  }
+}
+
 const ProductDetail:React.FC<Props> = ({ product }) => {
   return (
     <>
@@ -32,25 +51,6 @@ const ProductDetail:React.FC<Props> = ({ product }) => {
       </div>
     </>
   )
-}
-
-export const getStaticProps:GetStaticProps = async ({ params }) => {
-  const product = await Products.show(params.name as string)
-
-  return {
-    props: {
-      product
-    }
-  }
-}
-
-export const getStaticPaths:GetStaticPaths = async () => {
-  const paths = await Products.listPaths()
-
-  return {
-    paths,
-    fallback: false
-  }
 }
 
 export default ProductDetail
