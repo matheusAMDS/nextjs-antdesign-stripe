@@ -1,6 +1,5 @@
-import Stripe from 'stripe'
-
-import stripeConfig from '../config/stripe'
+import fs from 'fs'
+import path from 'path'
 
 export interface Product {
   imgUrl: string;
@@ -10,27 +9,13 @@ export interface Product {
   priceId: string;
 }
 
-const stripe = new Stripe(stripeConfig.secret_key, {
-  apiVersion: '2020-03-02'
-})
-
 export default {
   async list() {
-    const prices = await stripe.prices.list({ type: 'one_time' })
-    const products = prices.data.slice(0,9).map(async price => {
-      const productId = price.product as string
-      const product = await stripe.products.retrieve(productId)
+    const filePath = path.resolve(process.cwd(), 'data', 'products.json')
+    const rawProducts = fs.readFileSync(filePath, 'utf8') 
+    const products:Product[] = JSON.parse(rawProducts)
 
-      return {
-        imgUrl: product.images[0],
-        name: product.name,
-        price: price.unit_amount / 100,
-        productId: product.id,
-        priceId: price.id
-      }
-    })
-
-    return Promise.all(products)
+    return products
   },
 
   async show(name:string) {
