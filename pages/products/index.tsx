@@ -38,7 +38,7 @@ const Home:React.FC<Props> = ({ products }) => {
               className="product-card"
               cover={(
                 <img 
-                  src={product.imgUrl} 
+                  src={product.imageUrl} 
                   className="product-image"
                   onClick={() => handleNavigation(product.productPath)}
                 />

@@ -2,12 +2,13 @@ import fs from 'fs'
 import path from 'path'
 
 export interface Product {
-  imgUrl: string;
+  image: string;
   name: string;
   price: number;
   productId: string;
   priceId: string;
   productPath: string;
+  imageUrl: string;
 }
 
 function convertToPath(name:string) {
@@ -26,6 +27,7 @@ export default {
     const serializedProducts = products.map(product => {
       return {
         ...product,
+        imageUrl: `/${product.image}`,
         productPath: convertToPath(product.name)
       }
     })
